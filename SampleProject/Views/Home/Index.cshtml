@@ -1,0 +1,220 @@
+﻿@* @model IEnumerable<Carousel.Models.Something>
+@{
+    int i = 0; 
+}
+
+@{
+    ViewData["Title"] = "Home Page";
+} *@
+
+
+<style>
+
+    body {
+        background-color: #EEF0E5; /* Light blue shade for the background */
+        color: #333; /* Text color */
+    }
+    #side-menu {
+        width: 200px;
+        height: 100%;
+        background-color: #f1f1f1;
+        position: fixed;
+        left: 0;
+        top: 0;
+        padding-top: 20px;
+    }
+
+        #side-menu ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+            #side-menu ul li {
+                padding: 8px;
+                text-align: center;
+                border-bottom: 1px solid #ddd;
+            }
+
+    #content {
+        margin-left: 220px; /* Adjust margin to accommodate side menu width */
+        padding: 15px;
+    }
+
+    .display-4 {
+        font-size: 2.5rem; /* Adjust the font size as needed */
+        font-weight: 300; /* Adjust the font weight as needed */
+        line-height: 1.2; /* Adjust the line height as needed */
+        color: #333; /* Adjust the text color as needed */
+        margin-bottom: 20px; /* Adjust the margin as needed */
+    }
+
+        /* Additional styles for emphasis or decoration if desired */
+        .display-4::before {
+            content: "\201C"; /* Add an opening double quotation mark before the text */
+            font-size: 2rem; /* Adjust the size of the opening quotation mark */
+            margin-right: 0.5rem; /* Adjust the spacing between the quotation mark and text */
+        }
+
+        .display-4::after {
+            content: "\201D"; /* Add a closing double quotation mark after the text */
+            font-size: 2rem; /* Adjust the size of the closing quotation mark */
+            margin-left: 0.5rem; /* Adjust the spacing between the text and quotation mark */
+        }
+
+</style>
+
+@* <div id="carouselExample" class="carousel slide">
+    <div class="carousel-inner">
+        @foreach(var item in Model)
+        {
+            i++;
+            var active = i == 1 ? "" : "";
+            <div class="carousel-item ">
+                <img src="~/NewFolder/@item.Img " class="d-block w-100" alt="...">
+            </div>
+        }
+        
+       
+    </div> *@
+    @* <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div> *@
+
+
+<div class="text-center">
+    <h1 class="display-4">Your most unhappy customers are your greatest source of learning.</h1>
+   
+   
+
+</div>
+
+<br/>
+<br />
+
+
+
+<div class="container">
+    <div class="row">
+        <!-- Customer Card -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <img src="~/css/4.jpg" alt="Customer Image" class="mr-3" style="width: 200px; height: 200px; margin-right:50px">
+                        <div>
+                            <h5 class="card-title">Customer List</h5>
+                            <p class="card-text">Your most unhappy customers are your greatest source of learning.</p>
+                            <a asp-controller="Customers" class="btn btn-primary">Customer Link <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Card -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <img src="~/css/order.jpg" alt="Order Image" class="mr-3" style="width: 200px; height: 200px; margin-right:50px">
+                        <div>
+                            <h5 class="card-title">Order List</h5>
+                            <p class="card-text">Find your customers order list by clicking the below button. </p>
+                            <a asp-controller="Product" class="btn btn-primary" style="color:green">Update Product <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <img src="~/css/order.jpg" alt="Order Image" class="mr-3" style="width: 200px; height: 200px; margin-right:50px">
+                        <div>
+                            <h5 class="card-title">Order List</h5>
+                            <p class="card-text">Find your customers Order list by clicking the below button. </p>
+                            <a asp-controller="OrderList" class="btn btn-primary" style="color:green">Take Order Here <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<br />
+<br />
+
+<div class="row">
+    <div class="col-6">
+        <h3>Profit from Customers every month</h3>
+        <canvas id="barChart" width="400" height="200" style="width:200px; height: 110px;"></canvas>
+
+    </div>
+    <div class="col-6">
+        <h3>Number of Customers every month</h3>
+        <canvas id="pieChart" width="400" height="200" style="width:200px; height: 110px;"></canvas>
+
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript" >
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            url: "/Customers/GetAttendace",
+            data: "",
+            contextType: "application/json; charset=utf8",
+            dataType: "json",
+            success: OnSuccess,
+        });
+        function OnSuccess(data) {
+            const barChart = document.getElementById('barChart');
+            const pieChart = document.getElementById('pieChart');
+
+            var _data = data;
+            var _labels = _data[0];
+            var _CharData = _data[1];
+            var colors = ['Red', 'Green', 'Yellow', 'Purple'];
+
+            new Chart(barChart,
+            {
+                type: 'bar',
+                data: {
+                    labels: _labels,
+                    datasets: [{
+                        background: colors,
+                        data: _CharData,
+                        borderWidth: 1,
+                    }]
+                }
+            });
+
+            new Chart(pieChart,
+                {
+                    type: 'polarArea',
+                    data: {
+                        labels: _labels,
+                        datasets: [{
+                            background: colors,
+                            data: _CharData,
+                            borderWidth: 1,
+                        }]
+                    }
+                });
+        }
+    });
+
+
+</script>
